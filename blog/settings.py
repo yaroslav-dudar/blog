@@ -23,7 +23,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['tranquil-plains-4577.herokuapp.com']
+ALLOWED_HOSTS = ['uafreedom.herokuapp.com']
 
 
 # Application definition
@@ -89,4 +89,4 @@ STATICFILES_DIRS = (
 )
 
 # secure settings
-SECURE_PROXY_SSL_HEADER = (‘HTTP_X_FORWARDED_PROTO’, ‘https’)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['uafreedom.herokuapp.com']
 
-
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 # Application definition
 
 INSTALLED_APPS = (
@@ -35,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.polls',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,7 +65,9 @@ DATABASES = {
     }
 }
 
-import dj_database_url
+# use local
+#DATABASES['default'] = dj_database_url.config(
+#    default='sqlite:////' + os.path.join(BASE_DIR, 'db.sqlite3'))
 DATABASES['default'] = dj_database_url.config()
 
 # Internationalization

@@ -1,0 +1,16 @@
+#content {
+	margin: 50px auto;
+	font-family: "Gotham Rounded A","Gotham Rounded B",Helvetica,Arial,sans-serif;
+  font-size: 18px;
+  width: 760px;
+}
+
+input[type='button'] {
+    display: inline;
+    float: left;
+    margin: 4px;
+}
+
+#poll_name {
+	text-align: center;
+}

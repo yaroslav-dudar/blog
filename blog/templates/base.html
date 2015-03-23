@@ -1,9 +1,18 @@
+{% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html ng-app='poll-app'>
 <head>
 	<meta charset='utf-8'>
+	<link rel='stylesheet' type='text/css' href="{% static "bootstrap.min.css" %}">
+	<link rel='stylesheet' type='text/css' href="{% static "jumbotron-narrow.css" %}">
+    <script src="http://code.angularjs.org/1.1.5/angular.min.js"></script>
+    <script src="{% static "app.js" %}"></script>
 </head>
 <body>
-	{% block content %}{% endblock content %}
+	<div class='container'>
+		<div class='header'><h1 class='text-center'> Тест політичних поглядів</h1></div>
+		{% block content %} {% endblock content %}
+	</div>
+	<div class="navbar navbar-default navbar-fixed-bottom"></div>
 </body>
 </html>

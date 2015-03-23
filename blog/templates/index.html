@@ -1,4 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{{ message }}
+	<div ng-controller='Poll'> 
+		<ng-view></ng-view>
+	</div>
 {% endblock content %}

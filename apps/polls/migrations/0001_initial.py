@@ -34,9 +34,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PollResult',
             fields=[
-                ('poll', models.OneToOneField(primary_key=True, serialize=False, to='polls.Poll')),
-                ('date', models.DateField()),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('date', models.DateField(auto_now_add=True)),
                 ('total_value', models.IntegerField()),
+                ('poll', models.ForeignKey(to='polls.Poll')),
             ],
             options={
             },

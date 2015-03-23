@@ -1,0 +1,5 @@
+run:
+	python manage.py runserver
+
+dump:
+	python manage.py dumpdata --format=json polls > initial_data.json

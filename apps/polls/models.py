@@ -10,7 +10,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
 	text = models.CharField(max_length=1024)
-	question_answers = models.ForeignKey(Question)
+	question_answers = models.ForeignKey(Question, related_name='answers')
 	value = models.IntegerField()
 
 	def __unicode__(self):
@@ -26,8 +26,8 @@ class Poll(models.Model):
 
 
 class PollResult(models.Model):
-	poll = models.OneToOneField(Poll, primary_key=True)
-	date = models.DateField()
+	poll = models.ForeignKey(Poll)
+	date = models.DateField(auto_now_add=True)
 	total_value = models.IntegerField()
 
 	def __unicode__(self):

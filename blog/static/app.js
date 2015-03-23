@@ -3,7 +3,8 @@ var poll_app = angular.module('poll-app', []).
 		$locationProvider.html5Mode(true);
 		$routeProvider.
 			when('/', {'templateUrl': 'static/partials/landing.html'}).
-			when('/test', {'templateUrl': 'static/partials/test.html'})
+			when('/test', {'templateUrl': 'static/partials/test.html'}).
+			otherwise({redirectTo: '/'});
 	})
 
 function Poll($scope, $http, $location) {

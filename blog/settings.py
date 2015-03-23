@@ -25,7 +25,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['uafreedom.herokuapp.com']
+ALLOWED_HOSTS = ['uatest.herokuapp.com']
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 # Application definition

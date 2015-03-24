@@ -31,5 +31,5 @@ class PollResult(models.Model):
 	total_value = models.IntegerField()
 
 	def __unicode__(self):
-		return self.poll.name
+		return '%s(%s)' % (self.poll.name, self.date.strftime('%Y-%m-%d'))
 

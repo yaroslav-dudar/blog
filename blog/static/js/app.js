@@ -13,10 +13,9 @@ function Poll($scope, $http, $location) {
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
     
     $scope.is_finished = false;
-
+    // get guestions for poll with id=1 from the server
 	$http.get('/poll/1').
 		success(function(data, status, headers, config) {
-			// get guestions from server
 			$scope.questions = shuffle(data);
 			// shuffle answers in all questions
 			for (var i = 0; i < $scope.questions.length; i++) {
@@ -28,9 +27,6 @@ function Poll($scope, $http, $location) {
 				update_btn_name();
 			}
 			$scope.answers_id = Array($scope.questions.length);
-		}).
-		error(function(data, status, headers, config) {
-
 		});
 
 	$scope.next = function() {
@@ -40,8 +36,6 @@ function Poll($scope, $http, $location) {
 				success(function(data, status, headers, config) {
 					$scope.poll_result = data;
 					$scope.is_finished = true;
-				}).
-				error(function(data, status, headers, config) {
 				});
 		} else {
 			$scope.current_pos++;

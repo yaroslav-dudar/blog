@@ -1,14 +1,25 @@
-var poll_app = angular.module('poll-app', []).
-	config(function ($routeProvider, $locationProvider) {
-		$locationProvider.html5Mode(true);
-		$routeProvider.
-			when('/', {'templateUrl': 'static/partials/landing.html'}).
-			when('/test', {'templateUrl': 'static/partials/test.html'}).
-			otherwise({redirectTo: '/'});
-	})
+'use strict'
 
-function Poll($scope, $http, $location) {
-	// csrf settings
+var poll_app = angular.module('pollApp', ['ngRoute']);
+
+
+poll_app.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.
+      when('/', {
+        templateUrl: '/static/partials/landing.html',
+        controller: 'Poll'
+      }).
+      when('/test', {
+        templateUrl: '/static/partials/test.html',
+        controller: 'Poll'
+      }).
+      otherwise({
+        redirectTo: '/'
+      });
+  }]);
+
+poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+	// specify csrf token name and header
 	$http.defaults.xsrfCookieName = 'csrftoken';
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
     
@@ -61,7 +72,7 @@ function Poll($scope, $http, $location) {
 
 		$location.path('/test');
 	}
-}
+}]);
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex ;

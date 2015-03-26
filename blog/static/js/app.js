@@ -1,19 +1,21 @@
 'use strict'
 
-var poll_app = angular.module('pollApp', ['ngRoute']);
+var poll_app = angular.module('pollApp', ['ngRoute', 'ngAnimate']);
 
 
-poll_app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.
-      when('/', {
+poll_app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+	$locationProvider.html5Mode({
+	    enabled: true,
+	    requireBase: false
+	});
+	
+    $routeProvider.when('/', {
         templateUrl: '/static/partials/landing.html',
         controller: 'Poll'
-      }).
-      when('/test', {
+      }).when('/test', {
         templateUrl: '/static/partials/test.html',
         controller: 'Poll'
-      }).
-      otherwise({
+      }).otherwise({
         redirectTo: '/'
       });
   }]);
@@ -60,7 +62,7 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 	}
 
 	function update_btn_name() {
-		$scope.toggle_text = $scope.current_pos + 1 == $scope.questions.length ? 'Finish': 'Next';
+		$scope.toggle_text = $scope.current_pos + 1 == $scope.questions.length ? 'Звершити': 'Далі';
 	}
 
 	$scope.start_test = function () {

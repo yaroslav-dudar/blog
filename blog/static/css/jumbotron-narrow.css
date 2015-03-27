@@ -78,12 +78,22 @@ body {
   }
 }
 
-.animate-enter {
-  -webkit-transition: 1s linear all; /* Chrome */
-  transition: 1s linear all;
-  opacity: 0;
+.fade-in.ng-enter {
+  opacity: 0 ;
+  padding-left: 50px ;
+  transition: all ease 250ms ;
 }
- 
-.animate-enter.animate-enter-active {
-  opacity: 1;
+
+.fade-in.ng-enter-stagger {
+  transition-delay: .1s ;
+  -webkit-transition-delay: .1s ;
+}
+
+.fade-in.ng-enter-active {
+  opacity: 1.0 ;
+  padding-left: 0px ;
+}
+
+.selected-false {
+  font-weight: normal;
 }

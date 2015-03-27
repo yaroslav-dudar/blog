@@ -18,13 +18,14 @@ poll_app.config(['$routeProvider', '$locationProvider', function ($routeProvider
       }).otherwise({
         redirectTo: '/'
       });
+
   }]);
 
 poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $http, $location) {
 	// specify csrf token name and header
 	$http.defaults.xsrfCookieName = 'csrftoken';
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-    
+
     $scope.is_finished = false;
     // get guestions for poll with id=1 from the server
 	$http.get('/poll/1').
@@ -34,7 +35,6 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 			for (var i = 0; i < $scope.questions.length; i++) {
 				$scope.questions[i].answers = shuffle($scope.questions[i].answers);
 			}
-
 			if ($scope.questions.length > 0) {
 				$scope.current_pos = 0;
 				update_btn_name();
@@ -59,12 +59,12 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 	$scope.previous = function() {
 		$scope.current_pos--;
 		update_btn_name();
-	}
+	};
 
 	function update_btn_name() {
 		$scope.toggle_text = $scope.current_pos + 1 == $scope.questions.length ? 'Звершити': 'Далі';
-	}
-
+	};
+	
 	$scope.start_test = function () {
 		// clear all answers
 		$scope.is_finished = false;
@@ -88,4 +88,4 @@ function shuffle(array) {
       array[randomIndex] = temporaryValue;
     }
     return array;
-}
+};

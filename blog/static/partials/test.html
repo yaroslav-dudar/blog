@@ -17,9 +17,14 @@
 </div>
 <!-- Represent test results -->
 <div ng-if='is_finished && is_loaded'>
-	<h2>Ви {{ poll_result["result"] }}</h2>
-	<p>{{ poll_result["description"] }}</p>
-	<button class='btn btn-lg btn-default' ng-click='start_test()'>Пройти тест ще раз</button>
+	<div style='float: left; margin-right: 20px;'>
+		<img src='{{poll_result["info"]["logo"]}}'>
+	</div>
+	<div>
+		<h4><strong>Ви {{ poll_result['result'] }}</strong></h4>
+		<small>{{ poll_result['info']['description'] }}</small>
+		<button class='btn btn-default' ng-click='start_test()' style="float:right; margin-top: 20px;">Пройти тест ще раз</button>
+	</div>
 </div>
 <!-- Show loading animation -->
 <div ng-if='!is_loaded'>

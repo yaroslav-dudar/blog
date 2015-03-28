@@ -58,6 +58,7 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 					$scope.is_finished = true;
 
 					$scope.is_loaded = true;
+					console.log(data);
 				});
 		} else {
 			$scope.current_pos++;

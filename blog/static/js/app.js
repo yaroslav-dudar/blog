@@ -10,11 +10,9 @@ poll_app.config(['$routeProvider', '$locationProvider', function ($routeProvider
 	});
 	
     $routeProvider.when('/', {
-        templateUrl: '/static/partials/landing.html',
-        controller: 'Poll'
+        templateUrl: '/static/partials/landing.html'
       }).when('/test', {
-        templateUrl: '/static/partials/test.html',
-        controller: 'Poll'
+        templateUrl: '/static/partials/test.html'
       }).otherwise({
         redirectTo: '/'
       });
@@ -26,7 +24,12 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 	$http.defaults.xsrfCookieName = 'csrftoken';
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+    // mark if test finished
     $scope.is_finished = false;
+
+    // mark id data loaded
+    $scope.is_loaded = false;
+
     // get guestions for poll with id=1 from the server
 	$http.get('/poll/1').
 		success(function(data, status, headers, config) {
@@ -40,15 +43,21 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 				update_btn_name();
 			}
 			$scope.answers_id = Array($scope.questions.length);
+			// questions loaded
+			$scope.is_loaded = true;
 		});
 
 	$scope.next = function() {
 		if ($scope.current_pos + 1 == $scope.questions.length) {
+			$scope.is_loaded = false;
+
 			// send answers to the server
 			$http.post('/poll/save', {'answers': $scope.answers_id, 'poll': '1'}).
 				success(function(data, status, headers, config) {
 					$scope.poll_result = data;
 					$scope.is_finished = true;
+
+					$scope.is_loaded = true;
 				});
 		} else {
 			$scope.current_pos++;
@@ -69,14 +78,18 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
 		// clear all answers
 		$scope.is_finished = false;
 		$scope.current_pos = 0;
-		$scope.answers_id = Array($scope.questions.length);
-		update_btn_name();
-
+		try {
+			$scope.answers_id = Array($scope.questions.length);
+			update_btn_name();
+		} catch(error) {
+			// questions already not loaded
+		}
 		$location.path('/test');
 	}
 }]);
 
 function shuffle(array) {
+	// function that randomize array elements
     var currentIndex = array.length, temporaryValue, randomIndex ;
 
     while (0 !== currentIndex) {

@@ -6,7 +6,7 @@
 	<p ng-repeat='answer in questions[current_pos].answers' class='fade-in'>
 		<label ng-class="{'selected-false' : answer.id!=answers_id[current_pos]}"> <input type="radio" name="answer" ng-value='answer.id' ng-model='answers_id[current_pos]'> {{ answer.text }} </label>
 	</p>
-	<div class='text-center'> 
+	<div class='text-center bottom-retreat'>
 		<button ng-click='previous()' ng-disabled='current_pos == 0' class='btn btn-default'>
 			Назад
 		</button>
@@ -23,7 +23,7 @@
 	<div>
 		<h4><strong>Ви {{ poll_result['result'] }}</strong></h4>
 		<small>{{ poll_result['info']['description'] }}</small>
-		<button class='btn btn-default' ng-click='start_test()' style="float:right; margin-top: 20px;">Пройти тест ще раз</button>
+		<button class='btn btn-default bottom-retreat' ng-click='start_test()' style="float:right; margin-top: 20px;">Пройти тест ще раз</button>
 	</div>
 </div>
 <!-- Show loading animation -->

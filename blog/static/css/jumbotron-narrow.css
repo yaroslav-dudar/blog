@@ -2,6 +2,7 @@
 body {
     padding-top: 20px;
     padding-bottom: 20px;
+    font-size: 1.5em;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */

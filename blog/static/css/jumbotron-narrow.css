@@ -79,6 +79,14 @@ body {
     }
 }
 
+/* Responive: for mobiles; */
+@media screen and (max-width: 768px) {
+    body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 0.8em;
+    }
+}
 .fade-in.ng-enter {
     opacity: 0 ;
     padding-left: 50px ;

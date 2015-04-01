@@ -31,7 +31,7 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
     $scope.is_loaded = false;
 
     // get guestions for poll with id=1 from the server
-    $http.get('/poll/1').
+    $http.get('/api/poll/1').
         success(function(data, status, headers, config) {
             $scope.questions = shuffle(data);
             // shuffle answers in all questions
@@ -52,7 +52,7 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
             $scope.is_loaded = false;
 
             // send answers to the server
-            $http.post('/poll/save', {'answers': $scope.answers_id, 'poll': '1'}).
+            $http.post('/api/poll_result/save', {'answers': $scope.answers_id, 'poll': '1'}).
                 success(function(data, status, headers, config) {
                     $scope.poll_result = data;
                     $scope.is_finished = true;

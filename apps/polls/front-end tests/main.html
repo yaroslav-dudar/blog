@@ -1,0 +1,89 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Testing</title>
+    <!-- Jasmine framework -->
+    <link rel="shortcut icon" type="image/png" href="jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="jasmine.css">
+
+    <script type="text/javascript" src="jasmine.js"></script>
+    <script type="text/javascript" src="jasmine-html.js"></script>
+    <script type="text/javascript" src="boot.js"></script>
+    <!-- Load AngularJS framework -->
+    <script type="text/javascript" src="../../../blog/static/js/angular.min.js"></script>
+    <script type="text/javascript" src="../../../blog/static/js/angular-animate.min.js"></script>
+    <script type="text/javascript" src="../../../blog/static/js/angular-route.min.js"></script>
+    <script type="text/javascript" src="../../../blog/static/js/angular-mocks.js"></script>
+    <!-- Testing app -->
+    <script type="text/javascript" src="../../../blog/static/js/app.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        (function() {
+            describe('Test Poll Controller', function() {
+
+                beforeEach(module('pollApp'));
+                var controller, httpMock, scope, location;
+                var mock_questions = [{answers: [3,4]}, {answers: [1,2]}];
+                var mock_result = {data: 'some data'};
+
+                beforeEach(inject(function($rootScope, $controller, $httpBackend, $location){
+                    httpMock = $httpBackend;
+                    scope = $rootScope.$new();
+                    location = $location;
+
+                    httpMock.expectGET('/api/poll/1').respond(mock_questions);
+                    $controller('Poll', {$scope: scope});
+                    httpMock.flush();
+                }));
+
+                function poll_started() {
+                    expect(scope.is_finished).toEqual(false);
+                    expect(scope.questions.length).toBe(mock_questions.length);
+                    expect(scope.answers_id).toEqual(Array(scope.questions.length));
+                    expect(scope.current_pos).toEqual(0);
+                    expect(scope.toggle_text).toEqual('Далі');
+                };
+
+                it('test location', function() {
+                    // index page
+                    expect(location.path()).toEqual('/');
+                    // go to /test page
+                    scope.start_test()
+                    expect(location.path()).toEqual('/test');
+                });
+
+                it('test started and next/prev question', function() {
+                    // questions loaded
+                    poll_started();
+
+                    // press next btn
+                    scope.next();
+                    expect(scope.current_pos).toEqual(1);
+                    expect(scope.toggle_text).toEqual('Звершити');
+
+                    // press previous btn
+                    scope.previous();
+                    expect(scope.current_pos).toEqual(0);
+                    expect(scope.toggle_text).toEqual('Далі');
+                });
+
+                it('test poll/save and restart poll', function() {
+                    scope.next();
+                    // finish poll
+                    httpMock.expectPOST('/api/poll_result/save').respond(mock_result);
+                    scope.next();
+                    httpMock.flush();
+                    // select answers with id=3,id=1
+                    scope.answers_id = [3,1];
+                    expect(scope.poll_result).toEqual(mock_result);
+                    expect(scope.is_finished).toEqual(true);
+                    // restart test
+                    scope.start_test()
+                    poll_started();
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

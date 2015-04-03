@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('text', models.CharField(max_length=1024)),
-                ('value', models.IntegerField()),
+                ('value', models.FloatField()),
             ],
             options={
             },
@@ -35,8 +35,23 @@ class Migration(migrations.Migration):
             name='PollResult',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('date', models.DateField(auto_now_add=True)),
-                ('total_value', models.IntegerField()),
+                ('date', models.DateTimeField(auto_now_add=True)),
+                ('total_value', models.FloatField()),
+                ('poll', models.ForeignKey(to='polls.Poll')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='PossiblePollResult',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('min', models.FloatField()),
+                ('max', models.FloatField()),
+                ('image', models.CharField(max_length=256)),
+                ('text', models.CharField(max_length=2048)),
+                ('name', models.CharField(max_length=256)),
                 ('poll', models.ForeignKey(to='polls.Poll')),
             ],
             options={
@@ -63,7 +78,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='answer',
             name='question_answers',
-            field=models.ForeignKey(to='polls.Question'),
+            field=models.ForeignKey(related_name='answers', to='polls.Question'),
             preserve_default=True,
         ),
     ]

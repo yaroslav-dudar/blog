@@ -30,7 +30,7 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
     // mark id data loaded
     $scope.is_loaded = false;
 
-    // get guestions for poll with id=1 from the server
+    // get questions for poll with id=1 from the server
     $http.get('/api/poll/1').
         success(function(data, status, headers, config) {
             $scope.questions = shuffle(data);
@@ -50,11 +50,13 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
     $scope.next = function() {
         if ($scope.current_pos + 1 == $scope.questions.length) {
             $scope.is_loaded = false;
-
+            var total_value = calculate_total_value($scope.answers_id, $scope.questions);
             // send answers to the server
-            $http.post('/api/poll_result/save', {'answers': $scope.answers_id, 'poll': '1'}).
-                success(function(data, status, headers, config) {
-                    $scope.poll_result = data;
+            $http.post('/api/poll_result/save', {total_value: total_value, poll: 1}).
+                then(function() {return $http.get('/api/possible_poll_result',
+                    {params: {poll_id: 1, total_value: total_value}})}).
+                then(function(response) {
+                    $scope.poll_result = response.data;
                     $scope.is_finished = true;
                     $scope.is_loaded = true;
                 });
@@ -101,3 +103,16 @@ function shuffle(array) {
     }
     return array;
 };
+
+function calculate_total_value(answers, questions) {
+    var total_value = 0;
+    for (var i = 0; i < answers.length; i++) {
+        for (var j = 0; j < questions[i].answers.length; j++) {
+            if (answers[i] === questions[i].answers[j].id) {
+                total_value += questions[i].answers[j].value;
+                break;
+            }
+        }
+    }
+    return total_value;
+}

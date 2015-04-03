@@ -11,7 +11,7 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.CharField(max_length=1024)
     question_answers = models.ForeignKey(Question, related_name='answers')
-    value = models.IntegerField()
+    value = models.FloatField()
 
     def __unicode__(self):
         return self.text
@@ -28,8 +28,20 @@ class Poll(models.Model):
 class PollResult(models.Model):
     poll = models.ForeignKey(Poll)
     date = models.DateTimeField(auto_now_add=True)
-    total_value = models.IntegerField()
+    total_value = models.FloatField()
 
     def __unicode__(self):
         return '%s(%s)' % (self.poll.name, self.date)
 
+
+class PossiblePollResult(models.Model):
+    poll = models.ForeignKey(Poll)
+    min = models.FloatField()
+    max = models.FloatField()
+    image = models.CharField(max_length=256)
+    text = models.CharField(max_length=2048)
+    name = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return self.name
+        

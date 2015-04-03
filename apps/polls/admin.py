@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import Question, Answer, Poll, PollResult
+from .models import Question, Answer, Poll, PollResult, PossiblePollResult
 
 class QuestionForm(forms.ModelForm):
     class Meta:
@@ -38,3 +38,4 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Poll)
 admin.site.register(PollResult, PollResultAdmin)
+admin.site.register(PossiblePollResult)

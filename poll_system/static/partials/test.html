@@ -3,14 +3,28 @@
 	<h3>
 		{{ questions[current_pos].description }} <span class='badge' style='vertical-align: middle;'>Питання {{ current_pos + 1 }} з {{ questions.length }}</span>
 	</h3>
-	<p ng-repeat='answer in questions[current_pos].answers' class='fade-in'>
-		<label ng-class="{'selected-false' : answer.id!=answers_id[current_pos]}"> <input type="radio" name="answer" ng-value='answer.id' ng-model='answers_id[current_pos]'> {{ answer.text }} </label>
+	<!-- If user can select only one answer, use radio buttons -->
+	<p ng-repeat='answer in questions[current_pos].answers' class='fade-in' ng-if='questions[current_pos].multipe_choice'>
+		<label ng-class="{'selected-false' : answers_id[current_pos].indexOf(answer.id) === -1}"> <input type="checkbox" name="answer" ng-value='answer.id' ng-checked='answers_id[current_pos].indexOf(answer.id) > -1' ng-click='toggleSelection(answer.id)'> {{ answer.text }} </label>
 	</p>
-	<div class='text-center bottom-retreat'>
+
+	<!-- If user can select multiple answers, use checkboxes -->
+	<p ng-repeat='answer in questions[current_pos].answers' class='fade-in' ng-if='!questions[current_pos].multipe_choice'>
+		<label ng-class="{'selected-false' : answer.id!=answers_id[current_pos]}"> <input type="radio" name="answer" ng-value='answer.id' ng-model='answers_id[current_pos][0]'> {{ answer.text }} </label>
+	</p>
+	<!-- Show info -->
+	<span class="label label-default" ng-if='questions[current_pos].multipe_choice'>
+		<strong> Виберіть один, або декілька варіантів відповіді. </strong>
+	</span>
+	<span class="label label-default" ng-if='!questions[current_pos].multipe_choice'>
+		<strong> Виберіть лише один варіант відповіді. </strong>
+	</span>
+
+	<div class='text-center bottom-retreat' style='margin-top: 20px;'>
 		<button ng-click='previous()' ng-disabled='current_pos == 0' class='btn btn-default'>
 			Назад
 		</button>
-		<button ng-click='next()' ng-disabled='! answers_id[current_pos]' class='btn btn-default'>
+		<button ng-click='next()' ng-disabled='answers_id[current_pos].length === 0' class='btn btn-default'>
 			{{ toggle_text }}
 		</button>
 	</div>

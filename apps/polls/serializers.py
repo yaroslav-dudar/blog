@@ -13,7 +13,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('description', 'answers')
+        fields = ('description', 'answers', 'multipe_choice')
 
 
 class PollResultSerializer(serializers.ModelSerializer):

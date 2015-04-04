@@ -20,7 +20,7 @@ poll_app.config(['$routeProvider', '$locationProvider', function ($routeProvider
   }]);
 
 poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    // specify csrf token name and header
+    // specify csrf token name and header(django send csrftoken with cookie)
     $http.defaults.xsrfCookieName = 'csrftoken';
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -42,7 +42,8 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
                 $scope.current_pos = 0;
                 update_btn_name();
             }
-            $scope.answers_id = Array($scope.questions.length);
+            $scope.answers_id = Array.apply(0,
+                Array($scope.questions.length)).map(function () { return []; });
             // questions loaded
             $scope.is_loaded = true;
         });
@@ -80,13 +81,27 @@ poll_app.controller('Poll', ['$scope', '$http', '$location', function ($scope, $
         $scope.is_finished = false;
         $scope.current_pos = 0;
         try {
-            $scope.answers_id = Array($scope.questions.length);
+            $scope.answers_id = Array.apply(0,
+                Array($scope.questions.length)).map(function () { return []; });
             update_btn_name();
         } catch(error) {
             // questions already not loaded
         }
         $location.path('/test');
-    }
+    };
+
+    // toggle selection for a given answer by his id
+    $scope.toggleSelection = function toggleSelection(selected_answer) {
+        var index = $scope.answers_id[$scope.current_pos].indexOf(selected_answer);
+        // answer already selected
+        if (index > - 1) {
+            // remove answer
+            $scope.answers_id[$scope.current_pos].splice(index, 1);
+        } else {
+            // select answer
+            $scope.answers_id[$scope.current_pos].push(selected_answer);
+        }
+    };
 }]);
 
 function shuffle(array) {
@@ -107,12 +122,10 @@ function shuffle(array) {
 function calculate_total_value(answers, questions) {
     var total_value = 0;
     for (var i = 0; i < answers.length; i++) {
-        for (var j = 0; j < questions[i].answers.length; j++) {
-            if (answers[i] === questions[i].answers[j].id) {
-                total_value += questions[i].answers[j].value;
-                break;
-            }
-        }
+        var answer_vals = questions[i].answers.map(function(answer, index) {
+            return answers[i].indexOf(answer.id) > -1 ? answer.value: 0
+        });
+        total_value += answer_vals.reduce(function(a, b) { return a + b; }, 0);
     }
     return total_value;
 }
